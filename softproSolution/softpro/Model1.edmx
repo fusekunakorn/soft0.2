@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="CustomerSet" EntityType="Model1.Store.CustomerSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RoomSet" EntityType="Model1.Store.RoomSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RentalOrderSet" EntityType="Model1.Store.RentalOrderSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DepositSet" EntityType="Model1.Store.DepositSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CustomerRentalOrder" Association="Model1.Store.CustomerRentalOrder">
+      <End Role="Customer" EntitySet="CustomerSet" />
+      <End Role="RentalOrder" EntitySet="RentalOrderSet" />
+    </AssociationSet>
+    <AssociationSet Name="RoomRentalOrder" Association="Model1.Store.RoomRentalOrder">
+      <End Role="Room" EntitySet="RoomSet" />
+      <End Role="RentalOrder" EntitySet="RentalOrderSet" />
+    </AssociationSet>
+    <AssociationSet Name="RoomDeposit" Association="Model1.Store.RoomDeposit">
+      <End Role="Room" EntitySet="RoomSet" />
+      <End Role="Deposit" EntitySet="DepositSet" />
+    </AssociationSet>
+    <AssociationSet Name="CustomerDeposit" Association="Model1.Store.CustomerDeposit">
+      <End Role="Customer" EntitySet="CustomerSet" />
+      <End Role="Deposit" EntitySet="DepositSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="CustomerSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SSN" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Sex" Type="bit" Nullable="false" />
+    <Property Name="Tel" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RoomSet">
+    <Key>
+      <PropertyRef Name="RoomId" />
+    </Key>
+    <Property Name="RoomId" Type="int" Nullable="false" />
+    <Property Name="Rent" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RentalOrderSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RetalDate" Type="datetime" Nullable="false" />
+    <Property Name="Unit" Type="int" Nullable="false" />
+    <Property Name="Person" Type="int" Nullable="false" />
+    <Property Name="WaterPrice" Type="float" Nullable="false" />
+    <Property Name="Total" Type="float" Nullable="false" />
+    <Property Name="Customer_Id" Type="int" Nullable="false" />
+    <Property Name="Room_RoomId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DepositSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CashDeposit" Type="float" Nullable="false" />
+    <Property Name="Room_RoomId" Type="int" Nullable="false" />
+    <Property Name="Customer_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="CustomerRentalOrder">
+    <End Role="Customer" Type="Model1.Store.CustomerSet" Multiplicity="1" />
+    <End Role="RentalOrder" Type="Model1.Store.RentalOrderSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RentalOrder">
+        <PropertyRef Name="Customer_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoomRentalOrder">
+    <End Role="Room" Type="Model1.Store.RoomSet" Multiplicity="1" />
+    <End Role="RentalOrder" Type="Model1.Store.RentalOrderSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="RoomId" />
+      </Principal>
+      <Dependent Role="RentalOrder">
+        <PropertyRef Name="Room_RoomId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoomDeposit">
+    <End Role="Room" Type="Model1.Store.RoomSet" Multiplicity="1" />
+    <End Role="Deposit" Type="Model1.Store.DepositSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="RoomId" />
+      </Principal>
+      <Dependent Role="Deposit">
+        <PropertyRef Name="Room_RoomId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CustomerDeposit">
+    <End Role="Customer" Type="Model1.Store.CustomerSet" Multiplicity="1" />
+    <End Role="Deposit" Type="Model1.Store.DepositSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Deposit">
+        <PropertyRef Name="Customer_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CustomerSet" EntityType="Model1.Customer" />
+          <EntitySet Name="RoomSet" EntityType="Model1.Room" />
+          <EntitySet Name="RentalOrderSet" EntityType="Model1.RentalOrder" />
+          <AssociationSet Name="CustomerRentalOrder" Association="Model1.CustomerRentalOrder">
+            <End Role="Customer" EntitySet="CustomerSet" />
+            <End Role="RentalOrder" EntitySet="RentalOrderSet" />
+          </AssociationSet>
+          <AssociationSet Name="RoomRentalOrder" Association="Model1.RoomRentalOrder">
+            <End Role="Room" EntitySet="RoomSet" />
+            <End Role="RentalOrder" EntitySet="RentalOrderSet" />
+          </AssociationSet>
+          <EntitySet Name="DepositSet" EntityType="Model1.Deposit" />
+          <AssociationSet Name="RoomDeposit" Association="Model1.RoomDeposit">
+            <End Role="Room" EntitySet="RoomSet" />
+            <End Role="Deposit" EntitySet="DepositSet" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerDeposit" Association="Model1.CustomerDeposit">
+            <End Role="Customer" EntitySet="CustomerSet" />
+            <End Role="Deposit" EntitySet="DepositSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FirstName" Nullable="false" />
+          <Property Type="String" Name="LastName" Nullable="false" />
+          <Property Type="String" Name="SSN" Nullable="false" />
+          <Property Type="Boolean" Name="Sex" Nullable="false" />
+          <NavigationProperty Name="RentalOrder" Relationship="Model1.CustomerRentalOrder" FromRole="Customer" ToRole="RentalOrder" />
+          <NavigationProperty Name="Deposit" Relationship="Model1.CustomerDeposit" FromRole="Customer" ToRole="Deposit" />
+          <Property Type="String" Name="Tel" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Type="Int32" Name="RoomId" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Double" Name="Rent" Nullable="false" />
+          <NavigationProperty Name="RentalOrder" Relationship="Model1.RoomRentalOrder" FromRole="Room" ToRole="RentalOrder" />
+          <NavigationProperty Name="Deposit" Relationship="Model1.RoomDeposit" FromRole="Room" ToRole="Deposit" />
+        </EntityType>
+        <EntityType Name="RentalOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Customer" Relationship="Model1.CustomerRentalOrder" FromRole="RentalOrder" ToRole="Customer" />
+          <NavigationProperty Name="Room" Relationship="Model1.RoomRentalOrder" FromRole="RentalOrder" ToRole="Room" />
+          <Property Type="DateTime" Name="RetalDate" Nullable="false" />
+          <Property Type="Int32" Name="Unit" Nullable="false" />
+          <Property Type="Int32" Name="Person" Nullable="false" />
+          <Property Type="Double" Name="WaterPrice" Nullable="false" />
+          <Property Type="Double" Name="Total" Nullable="false" />
+        </EntityType>
+        <Association Name="CustomerRentalOrder">
+          <End Type="Model1.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="Model1.RentalOrder" Role="RentalOrder" Multiplicity="*" />
+        </Association>
+        <Association Name="RoomRentalOrder">
+          <End Type="Model1.Room" Role="Room" Multiplicity="1" />
+          <End Type="Model1.RentalOrder" Role="RentalOrder" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Deposit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Room" Relationship="Model1.RoomDeposit" FromRole="Deposit" ToRole="Room" />
+          <NavigationProperty Name="Customer" Relationship="Model1.CustomerDeposit" FromRole="Deposit" ToRole="Customer" />
+          <Property Type="Double" Name="CashDeposit" Nullable="false" />
+        </EntityType>
+        <Association Name="RoomDeposit">
+          <End Type="Model1.Room" Role="Room" Multiplicity="1" />
+          <End Type="Model1.Deposit" Role="Deposit" Multiplicity="*" />
+        </Association>
+        <Association Name="CustomerDeposit">
+          <End Type="Model1.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="Model1.Deposit" Role="Deposit" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="CustomerSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Customer)">
+        <MappingFragment StoreEntitySet="CustomerSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="SSN" ColumnName="SSN" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Tel" ColumnName="Tel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoomSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Room)">
+        <MappingFragment StoreEntitySet="RoomSet">
+          <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+          <ScalarProperty Name="Rent" ColumnName="Rent" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RentalOrderSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.RentalOrder)">
+        <MappingFragment StoreEntitySet="RentalOrderSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RetalDate" ColumnName="RetalDate" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="Person" ColumnName="Person" />
+          <ScalarProperty Name="WaterPrice" ColumnName="WaterPrice" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DepositSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Deposit)">
+        <MappingFragment StoreEntitySet="DepositSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CashDeposit" ColumnName="CashDeposit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="CustomerRentalOrder" TypeName="Model1.CustomerRentalOrder" StoreEntitySet="RentalOrderSet">
+      <EndProperty Name="Customer">
+        <ScalarProperty Name="Id" ColumnName="Customer_Id" />
+      </EndProperty>
+      <EndProperty Name="RentalOrder">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RoomRentalOrder" TypeName="Model1.RoomRentalOrder" StoreEntitySet="RentalOrderSet">
+      <EndProperty Name="Room">
+        <ScalarProperty Name="RoomId" ColumnName="Room_RoomId" />
+      </EndProperty>
+      <EndProperty Name="RentalOrder">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RoomDeposit" TypeName="Model1.RoomDeposit" StoreEntitySet="DepositSet">
+      <EndProperty Name="Room">
+        <ScalarProperty Name="RoomId" ColumnName="Room_RoomId" />
+      </EndProperty>
+      <EndProperty Name="Deposit">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="CustomerDeposit" TypeName="Model1.CustomerDeposit" StoreEntitySet="DepositSet">
+      <EndProperty Name="Customer">
+        <ScalarProperty Name="Id" ColumnName="Customer_Id" />
+      </EndProperty>
+      <EndProperty Name="Deposit">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
